@@ -16,4 +16,6 @@ public interface WordService {
     boolean isExists(Long id);
 
     WordEntity updatePartial(Long id, WordEntity wordEntity);
+
+    void delete(Long id);
 }

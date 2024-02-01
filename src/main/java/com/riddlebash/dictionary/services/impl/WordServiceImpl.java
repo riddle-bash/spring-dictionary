@@ -48,4 +48,9 @@ public class WordServiceImpl implements WordService {
             return wordRepository.save(existWord);
         }).orElseThrow(() -> new RuntimeException("Word does not exist"));
     }
+
+    @Override
+    public void delete(Long id) {
+        wordRepository.deleteById(id);
+    }
 }

@@ -69,4 +69,14 @@ public class WordController {
         }
     }
 
+    @DeleteMapping(path = "/words/{id}")
+    public ResponseEntity<WordDto> deleteWord(@PathVariable("id") Long id) {
+
+        if (wordService.isExists(id)) {
+            wordService.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
