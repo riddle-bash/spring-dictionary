@@ -57,4 +57,74 @@ public class WordRepositoryIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatWordFullyUpdated() throws Exception{
+        WordEntity testWordA = TestDataUtil.createTestWordA();
+        wordService.save(testWordA);
+
+        testWordA.setWord("Updated");
+        WordEntity updatedWord = WordEntity.builder()
+                .word(testWordA.getWord())
+                .pronunciation(testWordA.getPronunciation())
+                .type(testWordA.getType())
+                .meaning(testWordA.getMeaning())
+                .build();
+        String wordJson = objectMapper.writeValueAsString(updatedWord);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/words/" + testWordA.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(wordJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("word").value(testWordA.getWord())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("pronunciation").value(testWordA.getPronunciation())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("type").value(testWordA.getType())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("meaning").value(testWordA.getMeaning())
+        );
+    }
+
+    @Test
+    public void testThatWordPartiallyUpdated() throws Exception{
+        WordEntity testWordA = TestDataUtil.createTestWordA();
+        wordService.save(testWordA);
+
+        testWordA.setWord("Updated");
+        WordEntity updatedWord = WordEntity.builder()
+                .word(testWordA.getWord())
+                .build();
+        String wordJson = objectMapper.writeValueAsString(updatedWord);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/words/" + testWordA.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(wordJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("word").value(testWordA.getWord())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("pronunciation").value(testWordA.getPronunciation())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("type").value(testWordA.getType())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("meaning").value(testWordA.getMeaning())
+        );
+    }
+
+    @Test
+    public void testThatWordDeleted() throws Exception{
+        WordEntity testWordA = TestDataUtil.createTestWordA();
+        wordService.save(testWordA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/words/" + testWordA.getId())
+        ).andExpect(
+                MockMvcResultMatchers.status().isNoContent()
+        );
+    }
 }
