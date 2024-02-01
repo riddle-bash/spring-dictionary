@@ -16,7 +16,7 @@ public class TestDataUtil {
     public static WordEntity createTestWordB() {
         return WordEntity.builder()
                 .word("butterfly")
-                .pronunciation("ˈbədərˌflī")
+                .pronunciation("/ˈbədərˌflī/")
                 .type("noun")
                 .meaning("con bướm")
                 .build();
@@ -25,7 +25,7 @@ public class TestDataUtil {
     public static WordEntity createTestWordC() {
         return WordEntity.builder()
                 .word("cat")
-                .pronunciation("kat")
+                .pronunciation("/kat/")
                 .type("noun")
                 .meaning("con mèo")
                 .build();

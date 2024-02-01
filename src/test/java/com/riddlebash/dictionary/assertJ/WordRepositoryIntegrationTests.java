@@ -48,7 +48,7 @@ public class WordRepositoryIntegrationTests {
         wordRepository.save(testWordC);
 
         Iterable<WordEntity> result = wordRepository.findAll();
-        assertThat(result).hasSize(3);
+        assertThat(result).hasSize(3).containsExactly(testWordA, testWordB, testWordC);
     }
 
     @Test
