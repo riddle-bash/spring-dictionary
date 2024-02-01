@@ -12,4 +12,8 @@ public interface WordService {
     Optional<WordEntity> find(Long id);
 
     Page<WordEntity> findAll(Pageable pageable);
+
+    boolean isExists(Long id);
+
+    WordEntity updatePartial(Long id, WordEntity wordEntity);
 }

@@ -44,4 +44,29 @@ public class WordController {
         Page<WordEntity> words = wordService.findAll(pageable);
         return words.map(wordMapper::mapTo);
     }
+
+    @PutMapping(path = "/words/{id}")
+    public ResponseEntity<WordDto> updateFullWord(@PathVariable("id") Long id,
+                                                  @RequestBody WordDto wordDto) {
+        if (wordService.isExists(id)) {
+            WordEntity wordEntity = wordMapper.mapFrom(wordDto);
+            WordEntity savedWordEntity = wordService.save(wordEntity);
+            return new ResponseEntity<>(wordMapper.mapTo(savedWordEntity), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping(path = "/words/{id}")
+    public ResponseEntity<WordDto> updatePartialWord(@PathVariable("id") Long id,
+                                                     @RequestBody WordDto wordDto) {
+        if (wordService.isExists(id)) {
+            WordEntity wordEntity = wordMapper.mapFrom(wordDto);
+            WordEntity savedWordEntity = wordService.updatePartial(id, wordEntity);
+            return new ResponseEntity<>(wordMapper.mapTo(savedWordEntity), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

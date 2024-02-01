@@ -32,4 +32,20 @@ public class WordServiceImpl implements WordService {
     public Page<WordEntity> findAll(Pageable pageable) {
         return wordRepository.findAll(pageable);
     }
+
+    @Override
+    public boolean isExists(Long id) {
+        return wordRepository.existsById(id);
+    }
+
+    @Override
+    public WordEntity updatePartial(Long id, WordEntity wordEntity) {
+        return wordRepository.findById(id).map(existWord -> {
+            Optional.ofNullable(wordEntity.getWord()).ifPresent(existWord::setWord);
+            Optional.ofNullable(wordEntity.getPronunciation()).ifPresent(existWord::setPronunciation);
+            Optional.ofNullable(wordEntity.getType()).ifPresent(existWord::setType);
+            Optional.ofNullable(wordEntity.getMeaning()).ifPresent(existWord::setMeaning);
+            return wordRepository.save(existWord);
+        }).orElseThrow(() -> new RuntimeException("Word does not exist"));
+    }
 }
